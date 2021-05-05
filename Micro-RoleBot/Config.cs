@@ -7,7 +7,7 @@ namespace Micro_RoleBot
     {
         private readonly string Token;
         private readonly string CommandPrefix;
-        private 
+        private List<RoleWatch>
 
         public Config(string token, string commandPrefix)
         {
