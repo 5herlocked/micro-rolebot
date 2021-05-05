@@ -1,16 +1,15 @@
 ﻿using System;
-
 using DSharpPlus.Entities;
 
 namespace Micro_RoleBot
 {
     class RoleWatch
     {
-        private ulong Guild;
-        private ulong Channel;
-        private ulong Message;
-        private string Emoji;
-        private ulong Role;
+        private ulong _guild;
+        private ulong _channel;
+        private ulong _message;
+        private ulong _emoji;
+        private ulong _role;
 
         private DiscordGuild GetGuild(Bot api)
         {
@@ -32,38 +31,23 @@ namespace Micro_RoleBot
             throw new NotImplementedException();
         }
 
-        private void SetRole(DiscordRole role)
-        {
-            throw new NotImplementedException();
-        }
+        private void SetRole(SnowflakeObject role) => _role = role.Id;
 
-        private void SetEmoji(DiscordEmoji emoji)
-        {
-            throw new NotImplementedException();
-        }
+        private void SetEmoji(SnowflakeObject emoji) => _emoji = emoji.Id;
 
-        private void SetMessage(object result)
-        {
-            throw new NotImplementedException();
-        }
+        private void SetMessage(SnowflakeObject message) => _message = message.Id;
 
-        private void SetChannel(DiscordChannel channel)
-        {
-            throw new NotImplementedException();
-        }
+        private void SetChannel(SnowflakeObject channel) => _channel = channel.Id;
 
-        private void SetGuild(DiscordGuild guild)
-        {
-            throw new NotImplementedException();
-        }
+        private void SetGuild(SnowflakeObject guild) => _guild = guild.Id;
 
-        public RoleWatch(ulong guild, ulong channel, ulong message, string emoji, ulong role)
+        public RoleWatch(ulong guild, ulong channel, ulong message, ulong emoji, ulong role)
         {
-            Guild = guild;
-            Channel = channel;
-            Message = message;
-            Emoji = emoji;
-            Role = role;
+            _guild = guild;
+            _channel = channel;
+            _message = message;
+            _emoji = emoji;
+            _role = role;
         }
     }
 }

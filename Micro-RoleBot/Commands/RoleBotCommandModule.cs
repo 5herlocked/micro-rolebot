@@ -21,11 +21,13 @@ namespace Micro_RoleBot.Commands
 
         }
 
-        [Command("removeRole")]
+        [Command("removeRole"), Description("Removes a pre-existing Role watcher")]
+        [RequirePermissions(DSharpPlus.Permissions.ManageRoles)]
         public async Task RemoveRoleToWatch(CommandContext ctx, 
             [Description("The Role to stop watching")] DiscordRole role)
         {
-            
+            // **FIND THE CORRECT ROLEWATCH OBJECT FROM CURRENT CONFIG**
+            // Then remove said object
         }
     }
 }

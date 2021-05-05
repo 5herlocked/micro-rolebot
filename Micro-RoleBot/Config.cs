@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
+using DSharpPlus;
 using DSharpPlus.Entities;
 
 namespace Micro_RoleBot
 {
-    class Config
+    internal class Config
     {
         private readonly string Token;
         private readonly string CommandPrefix;
-        private List<RoleWatch>
+        private HashSet<RoleWatch> RolesToWatch;
 
         public Config(string token, string commandPrefix)
         {
             Token = token;
             CommandPrefix = commandPrefix;
-            RolesToWatch = new Dictionary<DiscordRole, DiscordEmoji>();
+            RolesToWatch = new HashSet<RoleWatch>();
         }
 
         public string GetToken()
@@ -26,15 +27,16 @@ namespace Micro_RoleBot
             return CommandPrefix;
         }
 
-        public int AddRoleToWatch(DiscordRole discordRole, DiscordEmoji discordEmoji)
+        public bool AddRoleToWatch(RoleWatch roleToAdd)
         {
-            if (RolesToWatch.ContainsKey(discordRole))
-            {
-                return -1;
-            }
+            // Add already detects collisions
+            return RolesToWatch.Add(roleToAdd);
+        }
 
-            RolesToWatch.Add(discordRole, discordEmoji);
-            return 0;
+        public bool StopWatchingRole(RoleWatch roleToRemove)
+        {
+            // Remove checks for non-existent elements
+            return RolesToWatch.Remove(roleToRemove);
         }
     }
 }
