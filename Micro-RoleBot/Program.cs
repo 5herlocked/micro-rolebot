@@ -8,8 +8,11 @@ namespace Micro_RoleBot
 {
     class Program
     {
+        // config only contains Discord token and command prefix
         private const string ConfigPath = "config.json";
-        private const string databasePath = "reaction-roles.db";
+        // Database contains all the guilds, channels and roles we're watching
+        private const string DatabasePath = "reaction-roles.db";
+        // Log
         private const string LogFile = "log.txt";
 
         private static void Main(string[] args)

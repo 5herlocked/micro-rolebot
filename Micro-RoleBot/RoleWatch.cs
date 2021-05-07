@@ -1,53 +1,47 @@
 ﻿using System;
 using DSharpPlus.Entities;
+using SQLite;
 
 namespace Micro_RoleBot
 {
-    class RoleWatch
+    [Table("rolewatch")]
+    public class RoleWatch
     {
-        private ulong _guild;
-        private ulong _channel;
-        private ulong _message;
-        private ulong _emoji;
-        private ulong _role;
+        [PrimaryKey] [Column("id")] 
+        public Guid Id { get; private set; }
+        
+        [Column("guild")]
+        public ulong Guild { get; private set; }
+        
+        [Column("channel")]
+        public ulong Channel { get; private set; }
+        
+        [Column("message")]
+        public ulong Message { get; set; }
+        
+        [Column("role")]
+        public ulong Role { get; private set; }
+        
+        [Column("emoji")]
+        public string Emoji { get; private set; }
 
-        private DiscordGuild GetGuild(Bot api)
+        public RoleWatch(DiscordGuild guild, DiscordChannel channel, DiscordMessage message, DiscordRole role, DiscordEmoji emoji)
         {
-            throw new NotImplementedException();
+            Id = new Guid();
+            Guild = guild.Id;
+            Channel = channel.Id;
+            Message = message.Id;
+            Role = role.Id;
+            Emoji = emoji.Name;
         }
 
-        private DiscordChannel GetChannel(Bot api)
+        public RoleWatch(DiscordGuild guild, DiscordChannel channel, DiscordRole role, string emoji)
         {
-            throw new NotImplementedException();
-        }
-
-        private DiscordEmoji GetEmoji(Bot api)
-        {
-            throw new NotImplementedException();
-        }
-
-        private DiscordRole GetRole(Bot api)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void SetRole(SnowflakeObject role) => _role = role.Id;
-
-        private void SetEmoji(SnowflakeObject emoji) => _emoji = emoji.Id;
-
-        private void SetMessage(SnowflakeObject message) => _message = message.Id;
-
-        private void SetChannel(SnowflakeObject channel) => _channel = channel.Id;
-
-        private void SetGuild(SnowflakeObject guild) => _guild = guild.Id;
-
-        public RoleWatch(ulong guild, ulong channel, ulong message, ulong emoji, ulong role)
-        {
-            _guild = guild;
-            _channel = channel;
-            _message = message;
-            _emoji = emoji;
-            _role = role;
+            Id = new Guid();
+            Guild = guild.Id;
+            Channel = channel.Id;
+            Role = role.Id;
+            Emoji = emoji;
         }
     }
 }

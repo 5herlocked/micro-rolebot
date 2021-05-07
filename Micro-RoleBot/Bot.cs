@@ -6,7 +6,7 @@ namespace Micro_RoleBot
 {
     internal class Bot
     {
-        private DiscordClient _client;
+        public DiscordClient Client;
         private CommandsNextExtension _commands;
 
         public Bot(Config config)
@@ -29,8 +29,8 @@ namespace Micro_RoleBot
                 EnableMentionPrefix = true,
             };
             
-            _client = new DiscordClient(clientConfiguration);
-            _commands = _client.UseCommandsNext(commandsConfig);
+            Client = new DiscordClient(clientConfiguration);
+            _commands = Client.UseCommandsNext(commandsConfig);
         }
     }
 }
