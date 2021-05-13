@@ -1,15 +1,22 @@
-﻿using DSharpPlus;
+﻿using System;
+using System.Threading.Tasks;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.Interactivity;
+using DSharpPlus.Interactivity.Enums;
+using DSharpPlus.Interactivity.Extensions;
+using Micro_RoleBot.Commands;
 using Microsoft.Extensions.Logging;
 
 namespace Micro_RoleBot
 {
-    internal class Bot
+    internal static class Bot
     {
-        public DiscordClient Client;
-        private CommandsNextExtension _commands;
+        public static DiscordClient Client;
+        private static CommandsNextExtension _commands;
+        public static DataAccessHelper DbAccess;
 
-        public Bot(Config config)
+        public static void InitializeBot(Config config)
         {
             var clientConfiguration = new DiscordConfiguration
             {
@@ -17,20 +24,31 @@ namespace Micro_RoleBot
                 TokenType = TokenType.Bot,
                 
                 AutoReconnect = true,
-                Intents = DiscordIntents.GuildMessages 
-                    | DiscordIntents.GuildMessageReactions,
+                Intents = DiscordIntents.AllUnprivileged,
                 MinimumLogLevel = LogLevel.Information,
             };
 
             var commandsConfig = new CommandsNextConfiguration
             {
-                StringPrefixes = new[] {config.GetCommandPrefix()},
+                StringPrefixes = config.GetCommandPrefix(),
                 EnableDms = true,
                 EnableMentionPrefix = true,
             };
+
+            var interactivityConfig = new InteractivityConfiguration
+            {
+                PollBehaviour = PollBehaviour.KeepEmojis,
+                Timeout = TimeSpan.FromSeconds(30),
+            };
             
             Client = new DiscordClient(clientConfiguration);
+            Client.UseInteractivity(interactivityConfig);
             _commands = Client.UseCommandsNext(commandsConfig);
+            
+            _commands.RegisterCommands<RoleBotCommandModule>();
+
+            DbAccess = new DataAccessHelper("database.db");
         }
+        
     }
 }

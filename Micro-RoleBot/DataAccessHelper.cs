@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SQLite;
 
 namespace Micro_RoleBot
@@ -15,9 +16,11 @@ namespace Micro_RoleBot
             _db.CreateTable<RoleWatch>();
         }
 
-        public static async void AddRoleWatchList(List<RoleWatch> rolesBeingWatched)
+        public int AddRoleWatchList(List<RoleWatch> rolesBeingWatched)
         {
-            throw new NotImplementedException();
+            var valuesInserted = _db.InsertAll(rolesBeingWatched);
+
+            return valuesInserted;
         }
     }
 }

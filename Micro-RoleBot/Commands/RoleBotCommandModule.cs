@@ -77,7 +77,7 @@ namespace Micro_RoleBot.Commands
                 }
                 // TODO: Exception handling
                 var mentionedRole = roleMessage.MentionedRoles;
-                var usedEmoji = DiscordEmoji.FromName(ctx.Client, roleMessage.Content.Split()[0]);
+                var usedEmoji = DiscordEmoji.FromName(ctx.Client, roleMessage.Content.Split(" ")[0]);
 
                 var constructedRole = new RoleWatch(ctx.Guild, chosenChannel, mentionedRole[0], usedEmoji.Name);
                 
@@ -87,12 +87,15 @@ namespace Micro_RoleBot.Commands
             var createdMessage = await ctx.Client.SendMessageAsync(chosenChannel, embedBuilder);
             foreach (var role in rolesBeingWatched)
             {
-                role.Message = createdMessage.Id;
+                role.Message = createdMessage.Id.ToString();
                 await createdMessage.CreateReactionAsync(DiscordEmoji.FromName(ctx.Client, role.Emoji));
             }
             
             // ADD ALL WATCHED ROLES TO DATA STORE
-            DataAccessHelper.AddRoleWatchList(rolesBeingWatched);
+            Bot.DbAccess.AddRoleWatchList(rolesBeingWatched);
+
+            await ctx.TriggerTypingAsync();
+            await ctx.RespondAsync("Make complete. See you later.");
         }
     }
 }

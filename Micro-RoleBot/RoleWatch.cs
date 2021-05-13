@@ -11,16 +11,16 @@ namespace Micro_RoleBot
         public Guid Id { get; private set; }
         
         [Column("guild")]
-        public ulong Guild { get; private set; }
+        public string Guild { get; private set; }
         
         [Column("channel")]
-        public ulong Channel { get; private set; }
+        public string Channel { get; private set; }
         
         [Column("message")]
-        public ulong Message { get; set; }
+        public string Message { get; set; }
         
         [Column("role")]
-        public ulong Role { get; private set; }
+        public string Role { get; private set; }
         
         [Column("emoji")]
         public string Emoji { get; private set; }
@@ -28,19 +28,19 @@ namespace Micro_RoleBot
         public RoleWatch(DiscordGuild guild, DiscordChannel channel, DiscordMessage message, DiscordRole role, DiscordEmoji emoji)
         {
             Id = new Guid();
-            Guild = guild.Id;
-            Channel = channel.Id;
-            Message = message.Id;
-            Role = role.Id;
+            Guild = guild.Id.ToString();
+            Channel = channel.Id.ToString();
+            Message = message.Id.ToString();
+            Role = role.Id.ToString();
             Emoji = emoji.Name;
         }
 
         public RoleWatch(DiscordGuild guild, DiscordChannel channel, DiscordRole role, string emoji)
         {
             Id = new Guid();
-            Guild = guild.Id;
-            Channel = channel.Id;
-            Role = role.Id;
+            Guild = guild.Id.ToString();
+            Channel = channel.Id.ToString();
+            Role = role.Id.ToString();
             Emoji = emoji;
         }
     }

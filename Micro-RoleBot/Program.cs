@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-
+using DSharpPlus;
 using Newtonsoft.Json;
 
 namespace Micro_RoleBot
@@ -18,8 +19,34 @@ namespace Micro_RoleBot
         private static void Main(string[] args)
         {
             Config config = null;
-            
-            if (File.Exists(ConfigPath))
+            if (!File.Exists(ConfigPath))
+            {
+                Console.WriteLine("Config file not found. Starting setup process");
+                Console.Write("Please enter the Discord API Token from the Developer Portal: ");
+                var token = Console.ReadLine()?.Trim();
+
+                var clientConfig = new DiscordConfiguration
+                {
+                    Token = token,
+                    TokenType = TokenType.Bot,
+                };
+
+                try
+                {
+                    var tempBot = new DiscordClient(clientConfig);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("It seems your API token is invalid, Terminating Setup");
+                    Environment.Exit(-1);
+                }
+
+                Console.WriteLine("What do you want the command prefix to be?");
+                var tempPrefix = Console.ReadLine()?.Trim();
+
+                config = new Config(token, new List<string> {tempPrefix});
+            }
+            else
             {
                 using (var reader = new StreamReader(ConfigPath))
                     config = JsonConvert.DeserializeObject<Config>(reader.ReadToEnd());
@@ -35,7 +62,7 @@ namespace Micro_RoleBot
                     
                     try
                     {
-                        config = new Config(discordToken, commandPrefix);
+                        config = new Config(discordToken, new List<string> {commandPrefix});
                     }
                     catch (Exception e)
                     {
@@ -51,7 +78,10 @@ namespace Micro_RoleBot
 
         static async Task MainAsync(Config config)
         {
-            var Bot = new Bot(config);
+            Bot.InitializeBot(config);
+            await Bot.Client.ConnectAsync();
+            
+            await Task.Delay(-1);
         }
     }
 }

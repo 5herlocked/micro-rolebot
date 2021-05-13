@@ -7,10 +7,10 @@ namespace Micro_RoleBot
     internal class Config
     {
         private readonly string Token;
-        private readonly string CommandPrefix;
+        private List<string> CommandPrefix;
         private HashSet<RoleWatch> RolesToWatch;
 
-        public Config(string token, string commandPrefix)
+        public Config(string token, List<string> commandPrefix)
         {
             Token = token;
             CommandPrefix = commandPrefix;
@@ -22,7 +22,7 @@ namespace Micro_RoleBot
             return Token;
         }
 
-        public string GetCommandPrefix()
+        public List<string> GetCommandPrefix()
         {
             return CommandPrefix;
         }
